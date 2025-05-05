@@ -190,7 +190,7 @@ def main():
             st.bar_chart(df.set_index('name')['roi'])
 
     st.markdown("---")
-    st.title("SplinterROI 📉")
+    st.title("SplinterROI ⚙️")
     st.caption("Advanced ROI filtering for Splinterlands card rentals")
     st.write(
         "Use the filters on the left sidebar to select cards and calculate their rental ROI."
