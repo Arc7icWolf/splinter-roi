@@ -98,12 +98,12 @@ def convert_df_to_excel(df):
 def main():
     st.set_page_config(
         page_title="SplinterROI",
-        page_icon="📉",
+        page_icon="⚙️",
         layout="wide",
         initial_sidebar_state="expanded"
     )
 
-    st.sidebar.header("Card Filters 🌴")
+    st.sidebar.header("Card Filters 🃏")
 
     editions = st.sidebar.multiselect(
         "Select Editions:",
@@ -133,7 +133,7 @@ def main():
     gold_only = st.sidebar.checkbox("Gold Foil", value=False)
     bcx = st.sidebar.number_input("BCX Amount:", min_value=1, value=1, step=1)
 
-    if st.sidebar.button("Calculate ROI 🏁"):
+    if st.sidebar.button("Calculate ROI 📊"):
         if not (editions and card_types and rarities and bcx):
             st.sidebar.error("Please fill in all required filters (Editions, Card Types, Rarities, BCX)!")
         else:
