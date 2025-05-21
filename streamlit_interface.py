@@ -138,22 +138,22 @@ def main():
         default=[]
     )
 
-    foil = st.sidebar.multiselect(
+    foil = st.sidebar.selectbox(
         "Select a Foil:",
-        options=foil_mapping.keys(),
-        default=["Regular"]
+        options=list(foil_mapping.keys()),
+        index=0
     )
 
     bcx = st.sidebar.number_input("BCX Amount:", min_value=1, value=1, step=1)
 
     if st.sidebar.button("Calculate ROI 📊"):
-        if not (editions and card_types and rarities and bcx):
-            st.sidebar.error("Please fill in all required filters (Editions, Card Types, Rarities, BCX)!")
+        if not (editions and card_types and rarities and foil and bcx):
+            st.sidebar.error("Please fill in all required filters (Editions, Card Types, Rarities, Foil, BCX)!")
         else:
             editions_ids = [str(edition_mapping[e]) for e in editions]
             rarities_ids = [rarity_mapping[r] for r in rarities]
             colors_ids = [color_mapping[c] for c in colors] if colors else []
-            foil_id = [foil_mapping[t] for t in foil]
+            foil_id = foil_mapping[foil]
 
             with st.spinner("Processing cards and calculating ROI..."):
                 try:
