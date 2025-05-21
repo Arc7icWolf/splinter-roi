@@ -146,7 +146,12 @@ def get_rental_prices(values):
         round(np.percentile(short_rental_prices, 70), 3) if short_rental_prices else 0
     )
 
-    return [long_rental_price, medium_rental_price, short_rental_price, len(long_rental_prices)]
+    return [
+        long_rental_price,
+        medium_rental_price,
+        short_rental_price,
+        len(long_rental_prices),
+    ]
 
 
 def get_result(cards_list):
@@ -163,7 +168,14 @@ def get_result(cards_list):
         else:
             roi = "N/A"
 
-        result.append({"name": name, "roi": roi, "avg rental price": rental_price, "cards rented": card["active_rentals"][3]})
+        result.append(
+            {
+                "name": name,
+                "roi": roi,
+                "avg rental price": rental_price,
+                "cards rented": card["active_rentals"][3],
+            }
+        )
 
     result = sorted(
         result,
@@ -174,7 +186,9 @@ def get_result(cards_list):
     return result
 
 
-def check_rental_roi(edition, types, rarity, foil, bcx, colours, session: requests.Session):
+def check_rental_roi(
+    edition, types, rarity, foil, bcx, colours, session: requests.Session
+):
     cards = get_cards(edition, types, rarity, colours, session)
 
     card_selling_prices = get_selling_prices(cards, foil, bcx, session)
@@ -210,7 +224,9 @@ def main():
 
     try:
         with requests.Session() as session:
-            result = check_rental_roi(edition, types, rarity, foil, bcx, colours, session)
+            result = check_rental_roi(
+                edition, types, rarity, foil, bcx, colours, session
+            )
     except (json.JSONDecodeError, KeyError) as e:
         logger.error(f"JSON decode error or missing key: {e}")
     except Exception as e:
@@ -219,4 +235,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
