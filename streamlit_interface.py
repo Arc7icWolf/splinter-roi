@@ -139,8 +139,8 @@ def main():
     )
 
     foil = st.sidebar.multiselect(
-        "Select Foils:",
-        options=list(foil_mapping.keys()),
+        "Select a Foil:",
+        options=foil_mapping.keys(),
         default=["Regular"]
     )
 
