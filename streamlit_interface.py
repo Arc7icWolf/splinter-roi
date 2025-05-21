@@ -147,7 +147,7 @@ def main():
     )
 
     colors = st.sidebar.multiselect(
-        "Select Colors:", options=list(color_mapping.keys()), default=[]
+        "Select Colors (optional):", options=list(color_mapping.keys()), default=[]
     )
 
     foil = st.sidebar.selectbox(
