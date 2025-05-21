@@ -153,7 +153,7 @@ def main():
             editions_ids = [str(edition_mapping[e]) for e in editions]
             rarities_ids = [rarity_mapping[r] for r in rarities]
             colors_ids = [color_mapping[c] for c in colors] if colors else []
-            foils_ids = [foil_mapping[t]) for t in foils]
+            foils_ids = [foil_mapping[t] for t in foils]
 
             with st.spinner("Processing cards and calculating ROI..."):
                 try:
