@@ -39,6 +39,14 @@ color_mapping = {
     "Neutral": "Gray"
 }
 
+foil_mapping = {
+    "Regular": 0,
+    "Gold": 1,
+    "Gold Arcane": 2,
+    "Black": 3,
+    "Black Arcane": 4
+}
+
 # Function to apply conditional formatting
 def highlight_roi(val):
     if val >= 30:
@@ -130,8 +138,12 @@ def main():
         default=[]
     )
 
-    st.sidebar.header("Foil")
-    gold_only = st.sidebar.checkbox("Gold Foil", value=False)
+    foils = st.sidebar.multiselect(
+        "Select Foils:",
+        options=list(foil_mapping.keys()),
+        default=["Regular"]
+    )
+
     bcx = st.sidebar.number_input("BCX Amount:", min_value=1, value=1, step=1)
 
     if st.sidebar.button("Calculate ROI 📊"):
@@ -141,6 +153,7 @@ def main():
             editions_ids = [str(edition_mapping[e]) for e in editions]
             rarities_ids = [rarity_mapping[r] for r in rarities]
             colors_ids = [color_mapping[c] for c in colors] if colors else []
+            foils_ids = [foil_mapping[t]) for t in foils]
 
             with st.spinner("Processing cards and calculating ROI..."):
                 try:
@@ -149,7 +162,7 @@ def main():
                         editions_ids,
                         card_types,
                         rarities_ids,
-                        gold_only,
+                        foils_ids,
                         bcx,
                         colors_ids,
                         session
