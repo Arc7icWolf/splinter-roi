@@ -201,10 +201,10 @@ def check_rental_roi(edition, types, rarity, foil, bcx, colours, session: reques
 
 
 def main():
-    edition = ["14"]  # Rebellion
+    edition = ["14"]  # Conclave Arcana
     types = ["Monster"]  # "Summoner" and/or "Monster"
     rarity = [1, 3]  # 1, 2, 3, and/or 4
-    foil = 1  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
+    foil = 0  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
     bcx = 1
     colours = []
 
