@@ -154,6 +154,7 @@ def main():
             rarities_ids = [rarity_mapping[r] for r in rarities]
             colors_ids = [color_mapping[c] for c in colors] if colors else []
             foil_id = foil_mapping[foil]
+            st.write(f"foil_id passato a check_rental_roi: {foil_id}")  # Debug
 
             with st.spinner("Processing cards and calculating ROI..."):
                 try:
