@@ -18,7 +18,8 @@ edition_mapping = {
     "Soulbound": 10,
     "Riftwatchers": 8,
     "Rebellion Core": 12,
-    "Rebellion Reward": 13
+    "Rebellion Reward": 13,
+    "Conclave Arcana": 14
 }
 
 rarity_mapping = {
@@ -108,7 +109,7 @@ def main():
     editions = st.sidebar.multiselect(
         "Select Editions:",
         options=list(edition_mapping.keys()),
-        default=["Rebellion Core"]
+        default=["Conclave Arcana"]
     )
 
     card_types = st.sidebar.multiselect(
@@ -120,7 +121,7 @@ def main():
     rarities = st.sidebar.multiselect(
         "Select Rarities:",
         options=list(rarity_mapping.keys()),
-        default=["Common"]
+        default=["Legendary"]
     )
 
     colors = st.sidebar.multiselect(
