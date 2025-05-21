@@ -155,7 +155,7 @@ def get_result(cards_list):
     for card in cards_list:
         name = card["name"]
         rental_price = card["active_rentals"][0] if card["active_rentals"] else 0
-        selling_price = card["price"]
+        selling_price = card.get("price", None)
 
         if selling_price and rental_price:
             roi = (rental_price * 365) / (selling_price * 1000) * 100
@@ -200,15 +200,16 @@ def check_rental_roi(edition, types, rarity, foils, bcx, colours, session: reque
     return final_result
 
 
-# def main(edition, types, rarity, foils, bxc, colours):
 def main():
-    edition = ["12"]  # Rebellion
-    types = ["Summoner"]  # "Summoner" and/or "Monster"
-    rarity = [1, 2]  # 1, 2, 3, and/or 4
-    foils = [0]  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
-    bcx = 5
+    edition = ["14"]  # Rebellion
+    types = ["Monster"]  # "Summoner" and/or "Monster"
+    rarity = [1, 3]  # 1, 2, 3, and/or 4
+    foils = [1, 4]  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
+    bcx = 1
     colours = []
-
+    with requests.Session() as session:
+            result = check_rental_roi(edition, types, rarity, foils, bcx, colours, session)
+    '''
     try:
         with requests.Session() as session:
             result = check_rental_roi(edition, types, rarity, foils, bcx, colours, session)
@@ -216,6 +217,7 @@ def main():
         logger.error(f"JSON decode error or missing key: {e}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
+    '''
 
 
 if __name__ == "__main__":
