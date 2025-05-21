@@ -51,7 +51,7 @@ def get_cards(edition, types, rarity, colours, session: requests.Session):
     return cards_list
 
 
-def get_selling_prices(cards, foils, bcx, session: requests.Session):
+def get_selling_prices(cards, foil, bcx, session: requests.Session):
     url = "https://api.splinterlands.com/market/for_sale_grouped"
     cards_on_market = get_response(url, session)
 
@@ -63,13 +63,13 @@ def get_selling_prices(cards, foils, bcx, session: requests.Session):
 
     for card in cards_on_market:
         card_id = card["card_detail_id"]
-        if card_id in card_ids and card["foil"] in foils:
+        if card_id in card_ids and card["foil"] == foil:
             cards_list.append({"id": card_id, "price": card["low_price_bcx"] * bcx})
 
     return cards_list
 
 
-def get_valid_active_rentals(active_rentals, past_days, foils, bcx):
+def get_valid_active_rentals(active_rentals, past_days, foil, bcx):
     valid_active_rentals = []
     for rental in active_rentals:
         rental_time = rental["rental_date"]
@@ -81,7 +81,7 @@ def get_valid_active_rentals(active_rentals, past_days, foils, bcx):
         if rental["rental_type"] != "season":
             continue
 
-        if rental["foil"] not in foils:
+        if rental["foil"] != foil:
             continue
 
         if rental["xp"] != bcx:
@@ -101,7 +101,7 @@ def get_valid_active_rentals(active_rentals, past_days, foils, bcx):
     return valid_active_rentals
 
 
-def get_active_rentals(cards, foils, bcx, session: requests.Session):
+def get_active_rentals(cards, foil, bcx, session: requests.Session):
     today = datetime.now()
     past_days = today - timedelta(days=30)
 
@@ -110,7 +110,7 @@ def get_active_rentals(cards, foils, bcx, session: requests.Session):
         url = f"https://api.splinterlands.com/market/active_rentals?card_detail_id={card['id']}"
         active_rentals = get_response(url, session)
         valid_active_rentals = get_valid_active_rentals(
-            active_rentals, past_days, foils, bcx
+            active_rentals, past_days, foil, bcx
         )
         card_rentals.append(
             {
@@ -174,12 +174,12 @@ def get_result(cards_list):
     return result
 
 
-def check_rental_roi(edition, types, rarity, foils, bcx, colours, session: requests.Session):
+def check_rental_roi(edition, types, rarity, foil, bcx, colours, session: requests.Session):
     cards = get_cards(edition, types, rarity, colours, session)
 
-    card_selling_prices = get_selling_prices(cards, foils, bcx, session)
+    card_selling_prices = get_selling_prices(cards, foil, bcx, session)
 
-    card_rentals = get_active_rentals(cards, foils, bcx, session)
+    card_rentals = get_active_rentals(cards, foil, bcx, session)
 
     for card in card_rentals:
         updated_price = get_rental_prices(card["active_rentals"])
@@ -204,20 +204,17 @@ def main():
     edition = ["14"]  # Rebellion
     types = ["Monster"]  # "Summoner" and/or "Monster"
     rarity = [1, 3]  # 1, 2, 3, and/or 4
-    foils = [1, 4]  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
+    foil = 1  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
     bcx = 1
     colours = []
-    with requests.Session() as session:
-            result = check_rental_roi(edition, types, rarity, foils, bcx, colours, session)
-    '''
+
     try:
         with requests.Session() as session:
-            result = check_rental_roi(edition, types, rarity, foils, bcx, colours, session)
+            result = check_rental_roi(edition, types, rarity, foil, bcx, colours, session)
     except (json.JSONDecodeError, KeyError) as e:
         logger.error(f"JSON decode error or missing key: {e}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
-    '''
 
 
 if __name__ == "__main__":
