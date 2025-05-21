@@ -138,7 +138,7 @@ def main():
         default=[]
     )
 
-    foils = st.sidebar.multiselect(
+    foil = st.sidebar.multiselect(
         "Select Foils:",
         options=list(foil_mapping.keys()),
         default=["Regular"]
@@ -153,7 +153,7 @@ def main():
             editions_ids = [str(edition_mapping[e]) for e in editions]
             rarities_ids = [rarity_mapping[r] for r in rarities]
             colors_ids = [color_mapping[c] for c in colors] if colors else []
-            foils_ids = [foil_mapping[t] for t in foils]
+            foil_id = [foil_mapping[t] for t in foil]
 
             with st.spinner("Processing cards and calculating ROI..."):
                 try:
@@ -162,7 +162,7 @@ def main():
                         editions_ids,
                         card_types,
                         rarities_ids,
-                        foils_ids,
+                        foil_id,
                         bcx,
                         colors_ids,
                         session
