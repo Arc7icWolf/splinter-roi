@@ -84,7 +84,7 @@ def get_valid_active_rentals(active_rentals, past_days, foil, bcx):
         if rental["foil"] != foil:
             continue
 
-        if bcx and rental["xp"] != bcx:
+        if rental["xp"] != bcx:
             continue
 
         if rental["payment_currency"] != "DEC":
