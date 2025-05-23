@@ -154,7 +154,7 @@ def main():
         "Select a Foil:", options=list(foil_mapping.keys()), index=0
     )
 
-    bcx = st.sidebar.number_input("BCX Amount:", min_value=1, value=1, step=1)
+    bcx = st.sidebar.number_input("BCX Amount (insert 38 for Gold Arcane, Black and Black Arcane):", min_value=1, value=1, step=1)
 
     if st.sidebar.button("Calculate ROI 📊"):
         if not (editions and card_types and rarities and foil and bcx):
