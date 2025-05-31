@@ -129,9 +129,9 @@ def get_rental_prices(values):
     short_rental_prices = []
 
     for value in values:
-        if value["rental_days"] >= 10:
+        if value["rental_days"] >= 14:
             long_rental_prices.append(value["rental_price"])
-        elif 10 > value["rental_days"] >= 5:
+        elif 14 > value["rental_days"] >= 11:
             medium_rental_prices.append(value["rental_price"])
         else:
             short_rental_prices.append(value["rental_price"])
