@@ -162,7 +162,7 @@ def main():
     bcx = st.sidebar.number_input("BCX Amount (insert 38 for Gold Arcane, Black and Black Arcane):", min_value=1, value=1, step=1)
 
     rental_lenght = st.sidebar.selectbox(
-        "Select Rental Lenght:", options=["Longer", "Medium", "Aggressive"], index=0
+        "Select Rental Lenght:", options=list(rental_lenght_mapping.keys()), index=0
     )
 
     if st.sidebar.button("Calculate ROI 📊"):
@@ -175,6 +175,7 @@ def main():
             rarities_ids = [rarity_mapping[r] for r in rarities]
             colors_ids = [color_mapping[c] for c in colors] if colors else []
             foil_id = foil_mapping[foil]
+            rental_lenght_id = rental_lenght_mapping[rental_lenght]
 
             with st.spinner("Processing cards and calculating ROI..."):
                 try:
