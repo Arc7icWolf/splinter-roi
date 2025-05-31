@@ -162,7 +162,7 @@ def main():
     bcx = st.sidebar.number_input("BCX Amount (insert 38 for Gold Arcane, Black and Black Arcane):", min_value=1, value=1, step=1)
 
     rental_lenght = st.sidebar.selectbox(
-        "Select Rental Lenght:", options=["Longer", "Medium", "Aggressive"], default=["Longer"]
+        "Select Rental Lenght:", options=["Longer", "Medium", "Aggressive"], index=0
     )
 
     if st.sidebar.button("Calculate ROI 📊"):
