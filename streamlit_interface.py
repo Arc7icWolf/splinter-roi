@@ -187,7 +187,7 @@ def main():
                         foil_id,
                         bcx,
                         colors_ids,
-                        rental_lenght,
+                        rental_lenght_id,
                         session,
                     )
                 except (json.JSONDecodeError, KeyError) as e:
