@@ -42,6 +42,11 @@ foil_mapping = {
     "Black Arcane": 4,
 }
 
+rental_lenght_mapping = {
+    "Longer": 0,
+    "Medium": 1,
+    "Aggressive": 2
+}
 
 # Function to apply conditional formatting
 def highlight_roi(val):
@@ -156,10 +161,14 @@ def main():
 
     bcx = st.sidebar.number_input("BCX Amount (insert 38 for Gold Arcane, Black and Black Arcane):", min_value=1, value=1, step=1)
 
+    rental_lenght = st.sidebar.multiselect(
+        "Select Rental Lenght:", options=["Longer", "Medium", "Aggressive"], default=["Longer"]
+    )
+
     if st.sidebar.button("Calculate ROI 📊"):
-        if not (editions and card_types and rarities and foil and bcx):
+        if not (editions and card_types and rarities and foil and bcx and rental_lenght):
             st.sidebar.error(
-                "Please fill in all required filters (Editions, Card Types, Rarities, Foil, BCX)!"
+                "Please fill in all required filters (Editions, Card Types, Rarities, Foil, BCX, Rental Lenght)!"
             )
         else:
             editions_ids = [str(edition_mapping[e]) for e in editions]
@@ -177,6 +186,7 @@ def main():
                         foil_id,
                         bcx,
                         colors_ids,
+                        rental_lenght,
                         session,
                     )
                 except (json.JSONDecodeError, KeyError) as e:
