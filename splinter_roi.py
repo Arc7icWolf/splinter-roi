@@ -154,12 +154,12 @@ def get_rental_prices(values):
     ]
 
 
-def get_result(cards_list):
+def get_result(cards_list, lenght):
     result = []
 
     for card in cards_list:
         name = card["name"]
-        rental_price = card["active_rentals"][0] if card["active_rentals"] else 0
+        rental_price = card["active_rentals"][lenght] if card["active_rentals"] else 0
         selling_price = card.get("price", None)
 
         if selling_price and rental_price:
@@ -187,7 +187,7 @@ def get_result(cards_list):
 
 
 def check_rental_roi(
-    edition, types, rarity, foil, bcx, colours, session: requests.Session
+    edition, types, rarity, foil, bcx, colours, lenght, session: requests.Session
 ):
     cards = get_cards(edition, types, rarity, colours, session)
 
@@ -206,7 +206,7 @@ def check_rental_roi(
 
     merged_cards_list = list(merged_cards_dict.values())
 
-    final_result = get_result(merged_cards_list)
+    final_result = get_result(merged_cards_list, lenght)
 
     for result in final_result:
         print(result)
@@ -221,11 +221,12 @@ def main():
     foil = 0  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
     bcx = 1
     colours = []
+    lenght = 0  # 0, 1 or 2
 
     try:
         with requests.Session() as session:
             result = check_rental_roi(
-                edition, types, rarity, foil, bcx, colours, session
+                edition, types, rarity, foil, bcx, colours, lenght, session
             )
     except (json.JSONDecodeError, KeyError) as e:
         logger.error(f"JSON decode error or missing key: {e}")
