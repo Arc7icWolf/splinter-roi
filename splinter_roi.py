@@ -150,10 +150,9 @@ def get_rental_prices(values):
     )
 
     return [
-        long_rental_price,
-        medium_rental_price,
-        short_rental_price,
-        len(long_rental_prices),
+        [long_rental_price, len(long_rental_prices)],
+        [medium_rental_price, len(medium_rental_prices)],
+        [short_rental_price, len(short_rental_prices)]
     ]
 
 
@@ -162,7 +161,7 @@ def get_result(cards_list, length):
 
     for card in cards_list:
         name = card["name"]
-        rental_price = card["active_rentals"][length] if card["active_rentals"] else 0
+        rental_price = card["active_rentals"][length][0] if card["active_rentals"] else 0
         selling_price = card.get("price", None)
 
         if selling_price and rental_price:
@@ -176,7 +175,7 @@ def get_result(cards_list, length):
                 "name": name,
                 "roi": roi,
                 "avg rental price": rental_price,
-                "cards rented": card["active_rentals"][3],
+                "cards rented": card["active_rentals"][length][1],
             }
         )
 
