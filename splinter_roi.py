@@ -64,7 +64,10 @@ def get_selling_prices(cards, foil, bcx, session: requests.Session):
     for card in cards_on_market:
         card_id = card["card_detail_id"]
         if card_id in card_ids and card["foil"] == foil:
-            cards_list.append({"id": card_id, "price": card["low_price_bcx"] * bcx})
+            if card["foil"] == 0 or card["foil"] == 1:
+                cards_list.append({"id": card_id, "price": card["low_price_bcx"] * bcx})
+            else:
+                cards_list.append({"id": card_id, "price": card["low_price_bcx"]})
 
     return cards_list
 
