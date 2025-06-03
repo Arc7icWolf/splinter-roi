@@ -43,9 +43,9 @@ foil_mapping = {
 }
 
 rental_length_mapping = {
-    "Longer": 0,
+    "Long": 0,
     "Medium": 1,
-    "Aggressive": 2
+    "Short": 2
 }
 
 # Function to apply conditional formatting
