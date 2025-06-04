@@ -51,7 +51,7 @@ def get_cards(edition, types, rarity, colours, session: requests.Session):
     return cards_list
 
 
-def get_selling_prices(cards, foil, session: requests.Session):
+def get_selling_prices(cards, foil, bcx, session: requests.Session):
     url = "https://api.splinterlands.com/market/for_sale_grouped"
     cards_on_market = get_response(url, session)
 
@@ -64,12 +64,15 @@ def get_selling_prices(cards, foil, session: requests.Session):
     for card in cards_on_market:
         card_id = card["card_detail_id"]
         if card_id in card_ids and card["foil"] == foil:
-            cards_list.append({"id": card_id, "price": card["low_price_bcx"]})
+            if card["foil"] == 0 or card["foil"] == 1:
+                cards_list.append({"id": card_id, "price": card["low_price_bcx"] * bcx})
+            else:
+                cards_list.append({"id": card_id, "price": card["low_price_bcx"]})
 
     return cards_list
 
 
-def get_valid_active_rentals(active_rentals, past_days, foil):
+def get_valid_active_rentals(active_rentals, past_days, foil, bcx):
     valid_active_rentals = []
     for rental in active_rentals:
         rental_time = rental["rental_date"]
@@ -82,6 +85,9 @@ def get_valid_active_rentals(active_rentals, past_days, foil):
             continue
 
         if rental["foil"] != foil:
+            continue
+
+        if rental["xp"] != bcx:
             continue
 
         if rental["payment_currency"] != "DEC":
@@ -98,7 +104,7 @@ def get_valid_active_rentals(active_rentals, past_days, foil):
     return valid_active_rentals
 
 
-def get_active_rentals(cards, foil, session: requests.Session):
+def get_active_rentals(cards, foil, bcx, session: requests.Session):
     today = datetime.now()
     past_days = today - timedelta(days=30)
 
@@ -107,7 +113,7 @@ def get_active_rentals(cards, foil, session: requests.Session):
         url = f"https://api.splinterlands.com/market/active_rentals?card_detail_id={card['id']}"
         active_rentals = get_response(url, session)
         valid_active_rentals = get_valid_active_rentals(
-            active_rentals, past_days, foil
+            active_rentals, past_days, foil, bcx
         )
         card_rentals.append(
             {
@@ -126,9 +132,9 @@ def get_rental_prices(values):
     short_rental_prices = []
 
     for value in values:
-        if value["rental_days"] >= 10:
+        if value["rental_days"] >= 14:
             long_rental_prices.append(value["rental_price"])
-        elif 10 > value["rental_days"] >= 5:
+        elif 14 > value["rental_days"] >= 11:
             medium_rental_prices.append(value["rental_price"])
         else:
             short_rental_prices.append(value["rental_price"])
@@ -144,23 +150,27 @@ def get_rental_prices(values):
     )
 
     return [
-        long_rental_price,
-        medium_rental_price,
-        short_rental_price,
-        len(long_rental_prices),
+        [long_rental_price, len(long_rental_prices)],
+        [medium_rental_price, len(medium_rental_prices)],
+        [short_rental_price, len(short_rental_prices)]
     ]
 
 
-def get_result(cards_list):
+def get_result(cards_list, length):
     result = []
 
     for card in cards_list:
         name = card["name"]
-        rental_price = card["active_rentals"][0] if card["active_rentals"] else 0
+        rental_price = card["active_rentals"][length][0] if card["active_rentals"] else 0
         selling_price = card.get("price", None)
 
         if selling_price and rental_price:
-            roi = (rental_price * 365) / (selling_price * 1000) * 100
+            if length == 0: 
+                roi = (rental_price * 36.5) / selling_price
+            elif length == 1:
+                roi = (rental_price * 36.5 * 4 / 5) / selling_price
+            else:
+                roi = (rental_price * 36.5 * 3 / 5) / selling_price
             roi = round(roi, 2)
         else:
             roi = "N/A"
@@ -170,7 +180,7 @@ def get_result(cards_list):
                 "name": name,
                 "roi": roi,
                 "avg rental price": rental_price,
-                "cards rented": card["active_rentals"][3],
+                "cards rented": card["active_rentals"][length][1],
             }
         )
 
@@ -184,13 +194,13 @@ def get_result(cards_list):
 
 
 def check_rental_roi(
-    edition, types, rarity, foil, colours, session: requests.Session
+    edition, types, rarity, foil, bcx, colours, length, session: requests.Session
 ):
     cards = get_cards(edition, types, rarity, colours, session)
 
-    card_selling_prices = get_selling_prices(cards, foil, session)
+    card_selling_prices = get_selling_prices(cards, foil, bcx, session)
 
-    card_rentals = get_active_rentals(cards, foil, session)
+    card_rentals = get_active_rentals(cards, foil, bcx, session)
 
     for card in card_rentals:
         updated_price = get_rental_prices(card["active_rentals"])
@@ -203,7 +213,7 @@ def check_rental_roi(
 
     merged_cards_list = list(merged_cards_dict.values())
 
-    final_result = get_result(merged_cards_list)
+    final_result = get_result(merged_cards_list, length)
 
     for result in final_result:
         print(result)
@@ -212,16 +222,18 @@ def check_rental_roi(
 
 
 def main():
-    edition = ["14"]  # Conclave Arcana
-    types = ["Monster", "Summoner"]  # "Summoner" and/or "Monster"
-    rarity = [1, 2, 3, 4]  # 1, 2, 3, and/or 4
-    foil = 2  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
+    edition = ["12"]  # Conclave Arcana
+    types = ["Summoner"]  # "Summoner" and/or "Monster"
+    rarity = [1, 2]  # 1, 2, 3, and/or 4
+    foil = 0  # 0 rf, 1 gold, 2 gold arcane, 3 black, 4 black arcane
+    bcx = 1
     colours = []
+    length = 2  # 0, 1 or 2
 
     try:
         with requests.Session() as session:
             result = check_rental_roi(
-                edition, types, rarity, foil, colours, session
+                edition, types, rarity, foil, bcx, colours, length, session
             )
     except (json.JSONDecodeError, KeyError) as e:
         logger.error(f"JSON decode error or missing key: {e}")

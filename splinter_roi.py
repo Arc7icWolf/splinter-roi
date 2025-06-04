@@ -165,7 +165,12 @@ def get_result(cards_list, length):
         selling_price = card.get("price", None)
 
         if selling_price and rental_price:
-            roi = (rental_price * 365) / (selling_price * 1000) * 100
+            if length == 0: 
+                roi = (rental_price * 36.5) / selling_price
+            elif length == 1:
+                roi = (rental_price * 36.5 * 4 / 5) / selling_price
+            else:
+                roi = (rental_price * 36.5 * 3 / 5) / selling_price
             roi = round(roi, 2)
         else:
             roi = "N/A"
