@@ -1,0 +1,26 @@
+URL = "https://d36mxiodymuqjm.cloudfront.net/website/"
+
+fire = f"{URL}collection/icon_element_fire.svg"
+water = f"{URL}collection/icon_element_water_inactive.svg"
+earth = f"{URL}collection/icon_element_earth_inactive.svg"
+life = f"{URL}collection/icon_element_life_inactive.svg"
+death = f"{URL}collection/icon_element_death_inactive.svg"
+dragon = f"{URL}collection/icon_element_dragon_inactive.svg"
+neutral = f"{URL}collection/icon_element_neutral_inactive.svg"
+
+common = f"{URL}create_team/icon_rarity_common_new.svg"
+rare = f"{URL}create_team/icon_rarity_rare_new.svg"
+epic = f"{URL}create_team/icon_rarity_epic_new.svg"
+legendary = f"{URL}create_team/icon_rarity_legendary_new.svg"
+
+archons = f"{URL}collection/icon_filter_archons.svg"
+units = f"{URL}collection/icon_filter_units.svg"
+
+conclave_arcana = f"{URL}icons/icon-edition-conclave-arcana.svg"
+rebellion = f"{URL}icons/icon-edition-rebellion.svg"
+chaos = f"{URL}icons/icon-edition-chaos.svg"
+untamed = f"{URL}icons/icon-edition-untamed.svg"
+beta = f"{URL}icons/icon-edition-beta.svg"
+alpha = f"{URL}icons/icon-edition-alpha.svg"
+foundations = f"{URL}icons/icon-edition-foundations.svg"
+gladius = f"{URL}icons/icon-edition-gladius.svg"
