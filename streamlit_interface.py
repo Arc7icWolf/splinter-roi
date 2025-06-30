@@ -156,15 +156,7 @@ def main():
                 ).applymap(highlight_roi, subset=["roi"]),
                 height=600,
             )
-            '''
-            excel_data = convert_df_to_excel(df)
-            st.download_button(
-                label="🗃️ Download results as Excel",
-                data=excel_data,
-                file_name="splinterlands_roi.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            )
-            '''
+
             st.bar_chart(df.set_index("name")["roi"])
 
     st.markdown("---")
