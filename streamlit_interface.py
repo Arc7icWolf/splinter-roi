@@ -60,7 +60,7 @@ def highlight_roi(val):
         color = "tomato"
     return f"background-color: {color}; color: black;"
 
-
+'''
 # Function to convert DataFrame to Excel with conditional formatting
 @st.cache_data
 def convert_df_to_excel(df):
@@ -124,7 +124,7 @@ def convert_df_to_excel(df):
         )
 
     return output.getvalue()
-
+'''
 
 # Streamlit application
 def main():
@@ -221,7 +221,7 @@ def main():
                 ).applymap(highlight_roi, subset=["roi"]),
                 height=600,
             )
-
+            '''
             excel_data = convert_df_to_excel(df)
             st.download_button(
                 label="🗃️ Download results as Excel",
@@ -229,7 +229,7 @@ def main():
                 file_name="splinterlands_roi.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             )
-
+            '''
             st.bar_chart(df.set_index("name")["roi"])
 
     st.markdown("---")
