@@ -184,7 +184,8 @@ def main():
             # Rinomina colonne per visualizzazione
             df = df.rename(columns={
                 "roi": "ROI",
-                "avg rental price": "Rental Price (avg)"
+                "avg rental price": "Rental Price (avg)",
+                "cards rented": "Amount of Cards Rented"
             })
             
             # Crea una colonna 'roi' numerica per ordinamento e highlight
@@ -197,7 +198,7 @@ def main():
             st.markdown("## ROI Results 📈")
             
             # Colonne da mostrare
-            columns_to_show = ["Card", "ROI", "Rental Price (avg)"]
+            columns_to_show = ["Card", "ROI", "Rental Price (avg)", "Amount of Cards Rented"]
             
             st.write(
                 df[columns_to_show]
