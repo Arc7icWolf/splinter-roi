@@ -31,6 +31,17 @@ def get_response(url, session: requests.Session):
     return response
 
 
+def add_icons(edition, type, rarity, color):
+    icons = []
+
+    icons.append(f"<img src='{edition_icons["edition"]}' width='20'>")
+    icons.append(f"<img src='{type_icons["type"]}' width='20'>")
+    icons.append(f"<img src='{rarity_icons["rarity"]}' width='20'>")
+    icons.append(f"<img src='{color_icons["color"]}' width='20'>")
+
+    return " ".join(icons)
+
+
 def get_cards(edition, types, rarity, colours, session: requests.Session):
     url = "https://api.splinterlands.com/cards/get_details"
     cards_list = []
@@ -43,10 +54,13 @@ def get_cards(edition, types, rarity, colours, session: requests.Session):
                 continue
             if colours and card["color"] not in colours:
                 continue
+
+            icons = add_icons(card["editions"], card["type"], card["rarity"], card["color"])
             cards_list.append(
                 {
                     "id": card["id"],
                     "name": card["name"],
+                    "icons": icons
                 }
             )
     return cards_list
@@ -121,6 +135,7 @@ def get_active_rentals(cards, foil, bcx, session: requests.Session):
                 "name": card["name"],
                 "id": card["id"],
                 "active_rentals": valid_active_rentals,
+                "icons": card["icons"]
             }
         )
 
@@ -162,6 +177,7 @@ def get_sorted_result(cards_list, length):
 
     for card in cards_list:
         name = card["name"]
+        icons = card["icons"]
         rental_price = card["active_rentals"][length][0] if card["active_rentals"] else 0
         selling_price = card.get("price", None)
 
@@ -178,7 +194,7 @@ def get_sorted_result(cards_list, length):
 
         result.append(
             {
-                "name": name,
+                "name": icons + " " + name,
                 "roi": roi,
                 "avg rental price": rental_price,
                 "cards rented": card["active_rentals"][length][1],
@@ -192,22 +208,6 @@ def get_sorted_result(cards_list, length):
     )
 
     return result
-
-
-def add_icons(result):
-    icons = []
-
-    '''
-    if row["edition"] in edition_icons:
-        icons.append(f"<img src='{edition_icons[row['edition']]}' width='20'>")
-    if row["card_type"] in card_type_icons:
-        icons.append(f"<img src='{card_type_icons[row['card_type']]}' width='20'>")
-    if row["rarity"] in rarity_icons:
-        icons.append(f"<img src='{rarity_icons[row['rarity']]}' width='20'>")
-    if row["color"] in color_icons:
-        icons.append(f"<img src='{color_icons[row['color']]}' width='20'>")
-    return " ".join(icons) + " " + row["name"]
-    '''
 
 
 def check_rental_roi(
@@ -230,12 +230,10 @@ def check_rental_roi(
 
     merged_cards_list = list(merged_cards_dict.values())
 
-    sorted_result = get_sorted_result(merged_cards_list, length)
-    
-    final_result = []
-    for result in sorted_result:
-        with_icons = add_icons(result)
-        final_result.append(with_icons)
+    final_result = get_sorted_result(merged_cards_list, length)
+
+    for result in final_result:
+        print(result)
 
     return final_result
 
