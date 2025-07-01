@@ -138,6 +138,8 @@ def main():
                 return
 
             df = pd.DataFrame(data)
+            df = df.rename(columns={"name": "Card", "roi": "ROI", "avg rental price": "Rental Price (avg)"})
+            
             # Converti 'roi' in numerico e gestisci "N/A"
             df["roi"] = pd.to_numeric(df["roi"], errors="coerce")
             # Ordina con NaN in fondo
@@ -149,7 +151,7 @@ def main():
             st.markdown("## ROI Results 📈")
             
             # Colonne da mostrare (Card, ROI, rental_rate, ecc.)
-            columns_to_show = ["name", "roi", "avg rental price"]
+            columns_to_show = ["Card", "ROI", "Rental Price (avg)"]
             
             st.write(
                 df[columns_to_show]
