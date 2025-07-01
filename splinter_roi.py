@@ -156,7 +156,7 @@ def get_rental_prices(values):
     ]
 
 
-def get_result(cards_list, length):
+def get_sorted_result(cards_list, length):
     result = []
 
     for card in cards_list:
@@ -193,6 +193,19 @@ def get_result(cards_list, length):
     return result
 
 
+def add_icons(result):
+    icons = []
+    if row["edition"] in edition_icons:
+        icons.append(f"<img src='{edition_icons[row['edition']]}' width='20'>")
+    if row["card_type"] in card_type_icons:
+        icons.append(f"<img src='{card_type_icons[row['card_type']]}' width='20'>")
+    if row["rarity"] in rarity_icons:
+        icons.append(f"<img src='{rarity_icons[row['rarity']]}' width='20'>")
+    if row["color"] in color_icons:
+        icons.append(f"<img src='{color_icons[row['color']]}' width='20'>")
+    return " ".join(icons) + " " + row["name"]
+
+
 def check_rental_roi(
     edition, types, rarity, foil, bcx, colours, length, session: requests.Session
 ):
@@ -213,10 +226,12 @@ def check_rental_roi(
 
     merged_cards_list = list(merged_cards_dict.values())
 
-    final_result = get_result(merged_cards_list, length)
+    sorted_result = get_sorted_result(merged_cards_list, length)
 
-    for result in final_result:
+    for result in sorted_result:
         print(result)
+
+    final_result = add_icons(sorted_result)
 
     return final_result
 
