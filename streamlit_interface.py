@@ -51,6 +51,9 @@ rental_length_mapping = {
 
 # Function to apply conditional formatting
 def highlight_roi(val):
+    if pd.isna(val):
+        return "background-color: tomato; color: black;"
+        
     if val >= 30:
         color = "lime"
     elif val >= 20:
