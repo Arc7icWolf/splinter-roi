@@ -195,7 +195,7 @@ def main():
             st.write(
                 df[columns_to_show]
                 .style.format({
-                    "ROI": lambda x: "{:.2f}".format(x) if pd.notnull(x) else "N/A",
+                    "ROI": lambda x: "{:.2f}".format(float(x)) if pd.notnull(x) else "N/A",
                     "Rental Price (avg)": "{:.4f}",
                 })
                 .applymap(highlight_roi, subset=["ROI"])  # highlight sulla colonna visibile
