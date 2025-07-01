@@ -138,35 +138,40 @@ def main():
                 return
 
             df = pd.DataFrame(data)
-            df = df.rename(columns={"name": "Card", "roi": "ROI", "avg rental price": "Rental Price (avg)"})
             
-            # Converti 'roi' in numerico e gestisci "N/A"
+            # Rinomina colonne per visualizzazione
+            df = df.rename(columns={
+                "name": "Card",
+                "roi": "ROI",
+                "avg rental price": "Rental Price (avg)"
+            })
+            
+            # Crea una colonna 'roi' numerica per ordinamento e highlight
             df["roi"] = pd.to_numeric(df["ROI"], errors="coerce")
+            
             # Ordina con NaN in fondo
-            df = df.sort_values(
-                by="roi", ascending=False, na_position="last"
-            ).reset_index(drop=True)
+            df = df.sort_values(by="roi", ascending=False, na_position="last").reset_index(drop=True)
             
             # Mostra i risultati
             st.markdown("## ROI Results 📈")
             
-            # Colonne da mostrare (Card, ROI, rental_rate, ecc.)
+            # Colonne da mostrare
             columns_to_show = ["Card", "ROI", "Rental Price (avg)"]
             
             st.write(
                 df[columns_to_show]
-                .style.format(
-                    {
-                        "ROI": lambda x: "{:.2f}".format(x) if pd.notnull(x) else "N/A",
-                        "Rental Price (avg)": "{:.4f}",
-                    }
-                )
-                .applymap(highlight_roi, subset=["roi"])
-                .to_html(escape=False),  # Serve per visualizzare le immagini HTML
+                .style.format({
+                    "ROI": lambda x: "{:.2f}".format(x) if pd.notnull(x) else "N/A",
+                    "Rental Price (avg)": "{:.4f}",
+                })
+                .applymap(highlight_roi, subset=["ROI"])  # highlight sulla colonna visibile
+                .to_html(escape=False),
                 unsafe_allow_html=True,
             )
             
-            st.bar_chart(df.set_index("name")["roi"])
+            # Bar chart
+            st.bar_chart(df.set_index("Card")["roi"])
+
 
     st.markdown("---")
     st.title("SplinterROI 🛠️")
