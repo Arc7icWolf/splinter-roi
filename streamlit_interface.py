@@ -150,13 +150,13 @@ def main():
             def generate_name_with_icons(row):
                 icons = []
                 if row["edition"] in edition_icons:
-                    icons.append(edition_icons[row["edition"]])
+                    icons.append(f"<img src='{edition_icons[row['edition']]}' width='20'>")
+                if row["card_type"] in card_type_icons:
+                    icons.append(f"<img src='{card_type_icons[row['card_type']]}' width='20'>")
                 if row["rarity"] in rarity_icons:
-                    icons.append(rarity_icons[row["rarity"]])
+                    icons.append(f"<img src='{rarity_icons[row['rarity']]}' width='20'>")
                 if row["color"] in color_icons:
-                    icons.append(color_icons[row["color"]])
-                if row["foil"] in foil_icons:
-                    icons.append(foil_icons[row["foil"]])
+                    icons.append(f"<img src='{color_icons[row['color']]}' width='20'>")
                 return " ".join(icons) + " " + row["name"]
             
             df["Card"] = df.apply(generate_name_with_icons, axis=1)
