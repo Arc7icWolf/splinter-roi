@@ -161,11 +161,13 @@ def main():
                 st.warning("No results found with the selected parameters.")
                 return
 
+            for d in data:
+                d["Card"] = f"{d['icons']} - {d['name']}"
+
             df = pd.DataFrame(data)
             
             # Rinomina colonne per visualizzazione
             df = df.rename(columns={
-                "name": "Card",
                 "roi": "ROI",
                 "avg rental price": "Rental Price (avg)"
             })
@@ -194,7 +196,7 @@ def main():
             )
             
             # Bar chart
-            st.bar_chart(df.set_index("Card")["roi"])
+            st.bar_chart(df.set_index("name")["roi"])
 
 
     st.markdown("---")
