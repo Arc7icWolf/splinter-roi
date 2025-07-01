@@ -71,6 +71,21 @@ def main():
         initial_sidebar_state="expanded",
     )
 
+    st.markdown(
+        """
+        <style>
+            /* larghezza al 100 % della colonna centrale */
+            .block-container {padding-left: 1rem; padding-right: 1rem;}
+            table.dataframe {width: 100% !important;}
+            /* facoltativo: scroll orizzontale se la tabella è enorme */
+            div[data-testid="stMarkdownContainer"] > div {
+                overflow-x: auto;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.sidebar.header("Card Filters 🃏")
 
     editions = st.sidebar.multiselect(
