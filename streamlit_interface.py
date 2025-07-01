@@ -51,7 +51,12 @@ rental_length_mapping = {
 
 # Function to apply conditional formatting
 def highlight_roi(val):
-    if pd.isna(val):
+    try:
+        val_float = float(val)
+    except (ValueError, TypeError):
+        # Se non convertibile, considera come NaN
+        return "background-color: tomato; color: black;"
+    if pd.isna(val_float):
         return "background-color: tomato; color: black;"
         
     if val >= 30:
