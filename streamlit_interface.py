@@ -5,6 +5,7 @@ import pandas as pd
 from io import BytesIO
 from splinter_roi import check_rental_roi
 from xlsxwriter import Workbook
+from icons import edition_icons, card_type_icons, rarity_icons, color_icons
 
 # Mapping dictionaries
 edition_mapping = {
