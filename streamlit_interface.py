@@ -145,17 +145,38 @@ def main():
                 by="roi", ascending=False, na_position="last"
             ).reset_index(drop=True)
 
+
+            # Aggiungi colonna con icone + nome
+            def generate_name_with_icons(row):
+                icons = []
+                if row["edition"] in edition_icons:
+                    icons.append(edition_icons[row["edition"]])
+                if row["rarity"] in rarity_icons:
+                    icons.append(rarity_icons[row["rarity"]])
+                if row["color"] in color_icons:
+                    icons.append(color_icons[row["color"]])
+                if row["foil"] in foil_icons:
+                    icons.append(foil_icons[row["foil"]])
+                return " ".join(icons) + " " + row["name"]
+            
+            df["Card"] = df.apply(generate_name_with_icons, axis=1)
+            
+            # Mostra i risultati
             st.markdown("## ROI Results 📈")
-            st.dataframe(
-                df.style.format(
+            
+            # Colonne da mostrare (Card, ROI, rental_rate, ecc.)
+            columns_to_show = ["Card", "roi", "rental_rate"]
+            st.write(
+                df[columns_to_show]
+                .style.format(
                     {
-                        "roi": lambda x: (
-                            "{:.2f}".format(x) if pd.notnull(x) else "N/A"
-                        ),  # Formatta i NaN come "N/A"
+                        "roi": lambda x: "{:.2f}".format(x) if pd.notnull(x) else "N/A",
                         "rental_rate": "{:.4f}",
                     }
-                ).applymap(highlight_roi, subset=["roi"]),
-                height=600,
+                )
+                .applymap(highlight_roi, subset=["roi"])
+                .to_html(escape=False),  # NECESSARIO per visualizzare le icone
+                unsafe_allow_html=True,
             )
 
             st.bar_chart(df.set_index("name")["roi"])
