@@ -4,6 +4,7 @@ import logging
 from datetime import datetime, timedelta
 import numpy as np
 from collections import defaultdict
+from icons import edition_icons, card_type_icons, rarity_icons, color_icons
 
 
 # logger
@@ -195,6 +196,8 @@ def get_sorted_result(cards_list, length):
 
 def add_icons(result):
     icons = []
+
+    '''
     if row["edition"] in edition_icons:
         icons.append(f"<img src='{edition_icons[row['edition']]}' width='20'>")
     if row["card_type"] in card_type_icons:
@@ -204,6 +207,7 @@ def add_icons(result):
     if row["color"] in color_icons:
         icons.append(f"<img src='{color_icons[row['color']]}' width='20'>")
     return " ".join(icons) + " " + row["name"]
+    '''
 
 
 def check_rental_roi(
@@ -227,11 +231,11 @@ def check_rental_roi(
     merged_cards_list = list(merged_cards_dict.values())
 
     sorted_result = get_sorted_result(merged_cards_list, length)
-
+    
+    final_result = []
     for result in sorted_result:
-        print(result)
-
-    final_result = add_icons(sorted_result)
+        with_icons = add_icons(result)
+        final_result.append(with_icons)
 
     return final_result
 
