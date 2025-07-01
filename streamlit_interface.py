@@ -74,17 +74,26 @@ def main():
     st.markdown(
         """
         <style>
-            /* larghezza al 100 % della colonna centrale */
-            .block-container {padding-left: 1rem; padding-right: 1rem;}
-            table.dataframe {width: 100% !important;}
-            /* facoltativo: scroll orizzontale se la tabella è enorme */
-            div[data-testid="stMarkdownContainer"] > div {
+            /* Applica larghezza piena a tutte le tabelle */
+            table {
+                width: 100% !important;
+                table-layout: auto;
+            }
+    
+            /* Scroll orizzontale per il contenitore della tabella */
+            .stMarkdown > div {
                 overflow-x: auto;
+            }
+    
+            /* Opzionale: imposta una larghezza minima per le colonne */
+            th, td {
+                min-width: 80px;
             }
         </style>
         """,
         unsafe_allow_html=True,
     )
+
 
     st.sidebar.header("Card Filters 🃏")
 
