@@ -141,7 +141,7 @@ def main():
             df = df.rename(columns={"name": "Card", "roi": "ROI", "avg rental price": "Rental Price (avg)"})
             
             # Converti 'roi' in numerico e gestisci "N/A"
-            df["roi"] = pd.to_numeric(df["roi"], errors="coerce")
+            df["roi"] = pd.to_numeric(df["ROI"], errors="coerce")
             # Ordina con NaN in fondo
             df = df.sort_values(
                 by="roi", ascending=False, na_position="last"
@@ -157,8 +157,8 @@ def main():
                 df[columns_to_show]
                 .style.format(
                     {
-                        "roi": lambda x: "{:.2f}".format(x) if pd.notnull(x) else "N/A",
-                        "rental_rate": "{:.4f}",
+                        "ROI": lambda x: "{:.2f}".format(x) if pd.notnull(x) else "N/A",
+                        "Rental Price (avg)": "{:.4f}",
                     }
                 )
                 .applymap(highlight_roi, subset=["roi"])
@@ -166,7 +166,6 @@ def main():
                 unsafe_allow_html=True,
             )
             
-
             st.bar_chart(df.set_index("name")["roi"])
 
     st.markdown("---")
