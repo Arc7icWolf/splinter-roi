@@ -70,6 +70,13 @@ def highlight_roi(val):
     return f"background-color: {color}; color: black;"
 
 
+def format_roi(x):
+    try:
+        return "{:.2f}".format(float(x))
+    except (ValueError, TypeError):
+        return "N/A"
+
+
 # Streamlit application
 def main():
     st.set_page_config(
@@ -195,7 +202,7 @@ def main():
             st.write(
                 df[columns_to_show]
                 .style.format({
-                    "ROI": lambda x: "{:.2f}".format(float(x)) if pd.notnull(x) else "N/A",
+                    "ROI": format_roi,
                     "Rental Price (avg)": "{:.4f}",
                 })
                 .applymap(highlight_roi, subset=["ROI"])  # highlight sulla colonna visibile
