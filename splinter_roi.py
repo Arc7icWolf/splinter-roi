@@ -194,7 +194,7 @@ def get_sorted_result(cards_list, length):
 
         result.append(
             {
-                "name": icons + " " + name,
+                "name": icons + " - " + name,
                 "roi": roi,
                 "avg rental price": rental_price,
                 "cards rented": card["active_rentals"][length][1],
