@@ -31,13 +31,13 @@ def get_response(url, session: requests.Session):
     return response
 
 
-def add_icons(edition, type, rarity, color):
+def add_icons(edition, card_type, rarity, color):
     icons = []
 
-    icons.append(f"<img src='{edition_icons["edition"]}' width='20'>")
-    icons.append(f"<img src='{type_icons["type"]}' width='20'>")
-    icons.append(f"<img src='{rarity_icons["rarity"]}' width='20'>")
-    icons.append(f"<img src='{color_icons["color"]}' width='20'>")
+    icons.append(f"<img src='{edition_icons[edition]}' width='20'>")
+    icons.append(f"<img src='{card_type_icons[card_type]}' width='20'>")
+    icons.append(f"<img src='{rarity_icons[rarity]}' width='20'>")
+    icons.append(f"<img src='{color_icons[color]}' width='20'>")
 
     return " ".join(icons)
 
@@ -256,7 +256,6 @@ def main():
         logger.error(f"JSON decode error or missing key: {e}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
-
 
 if __name__ == "__main__":
     main()
