@@ -149,7 +149,8 @@ def main():
             st.markdown("## ROI Results 📈")
             
             # Colonne da mostrare (Card, ROI, rental_rate, ecc.)
-            columns_to_show = ["Card", "roi", "rental_rate"]
+            columns_to_show = ["name", "roi", "avg rental price"]
+            
             st.write(
                 df[columns_to_show]
                 .style.format(
@@ -159,9 +160,10 @@ def main():
                     }
                 )
                 .applymap(highlight_roi, subset=["roi"])
-                .to_html(escape=False),  # NECESSARIO per visualizzare le icone
+                .to_html(escape=False),  # Serve per visualizzare le immagini HTML
                 unsafe_allow_html=True,
             )
+            
 
             st.bar_chart(df.set_index("name")["roi"])
 
