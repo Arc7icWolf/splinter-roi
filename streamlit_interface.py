@@ -6,6 +6,7 @@ from io import BytesIO
 from splinter_roi import check_rental_roi
 from xlsxwriter import Workbook
 from icons import edition_icons, card_type_icons, rarity_icons, color_icons
+from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 # Mapping dictionaries
 edition_mapping = {
@@ -152,10 +153,12 @@ def main():
             foil_id = foil_mapping[foil]
             rental_length_id = rental_length_mapping[rental_length]
 
+            data = []
+
             with st.spinner("Processing cards and calculating ROI..."):
-                try:
-                    session = requests.Session()
-                    data = check_rental_roi(
+                with requests.Session() as session, ThreadPoolExecutor() as executor:                    
+                    future = executor.submit(
+                        check_rental_roi, 
                         editions_ids,
                         card_types,
                         rarities_ids,
@@ -165,12 +168,20 @@ def main():
                         rental_length_id,
                         session,
                     )
-                except (json.JSONDecodeError, KeyError) as e:
-                    st.error(f"Data parsing error: {e}")
-                    return
-                except Exception as e:
-                    st.error(f"Unexpected error: {e}")
-                    return
+
+                    try:
+                        data = future.result(timeout=60)
+                    except TimeoutError:
+                        st.write(
+                            "Your query is requiring too much time: this might be due to a too complex query (try selecting more filters) or an unresponsive API (try again in a few minutes)"
+                        )
+                        return
+                    except (json.JSONDecodeError, KeyError) as e:
+                        st.error(f"Data parsing error: {e}")
+                        return
+                    except Exception as e:
+                        st.error(f"Unexpected error: {e}")
+                        return
 
             if not data:
                 st.warning("No results found with the selected parameters.")
