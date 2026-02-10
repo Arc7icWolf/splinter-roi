@@ -8,6 +8,7 @@ from xlsxwriter import Workbook
 from icons import edition_icons, card_type_icons, rarity_icons, color_icons
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
+# For every new edition added, a new icon should also be added in icons.py
 # Mapping dictionaries
 edition_mapping = {
     "Alpha Core": 0.1,
