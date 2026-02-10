@@ -119,11 +119,11 @@ def main():
     editions = st.sidebar.multiselect(
         "Select Editions:",
         options=list(edition_mapping.keys()),
-        default=["Conclave Arcana"],
+        default=["Conclave Arcana Core"],
     )
 
     card_types = st.sidebar.multiselect(
-        "Select Card Types:", options=["Summoner", "Monster"], default=["Monster"]
+        "Select Card Types:", options=["Arcon", "Monster"], default=["Monster"]
     )
 
     rarities = st.sidebar.multiselect(
