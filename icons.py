@@ -38,6 +38,6 @@ edition_icons = {
     "12": f"{URL}icons/icon-edition-rebellion.svg",
     "13": f"{URL}icons/icon-edition-rebellion.svg",
     "14": f"{URL}icons/icon-edition-conclave-arcana.svg",
-    "17": f"{URL}icons/icon-edition-conclave-arcana.svg",
-    "18": f"{URL}icons/icon-edition-conclave-arcana.svg",
+    "17": f"{URL}icons/icon-edition-extra.svg",
+    "18": f"{URL}icons/icon-edition-reward.svg",
 }
