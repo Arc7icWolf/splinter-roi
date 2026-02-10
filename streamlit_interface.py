@@ -21,7 +21,10 @@ edition_mapping = {
     "Riftwatchers": 8,
     "Rebellion Core": 12,
     "Rebellion Reward": 13,
-    "Conclave Arcana": 14,
+    "Conclave Arcana Core": 14,
+    "Conclave Arcana Extra": 17,
+    "Conclave Arcana Reward": 18,
+    "Escalation": 20,
 }
 
 rarity_mapping = {"Common": 1, "Rare": 2, "Epic": 3, "Legendary": 4}
