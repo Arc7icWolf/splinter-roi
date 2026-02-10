@@ -123,7 +123,7 @@ def main():
     )
 
     card_types = st.sidebar.multiselect(
-        "Select Card Types:", options=["Arcon", "Monster"], default=["Monster"]
+        "Select Card Types:", options=["Archon", "Monster"], default=["Monster"]
     )
 
     rarities = st.sidebar.multiselect(
@@ -156,7 +156,6 @@ def main():
             foil_id = foil_mapping[foil]
             rental_length_id = rental_length_mapping[rental_length]
             card_types = ["Summoner" if x == "Archon" else x for x in card_types]
-            st.write(card_types)
 
             data = []
 
