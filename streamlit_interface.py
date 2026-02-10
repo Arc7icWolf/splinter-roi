@@ -155,6 +155,7 @@ def main():
             colors_ids = [color_mapping[c] for c in colors] if colors else []
             foil_id = foil_mapping[foil]
             rental_length_id = rental_length_mapping[rental_length]
+            card_types = ["Summoner" if x == "Archon" else x for x in card_types]
 
             data = []
 
