@@ -120,7 +120,7 @@ def main():
     )
 
     card_types = st.sidebar.multiselect(
-        "Select Card Types:", options=["Summoner", "Monster"], default=["Monster"]
+        "Select Card Types:", options=["Arcon", "Monster"], default=["Monster"]
     )
 
     rarities = st.sidebar.multiselect(
